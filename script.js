@@ -38,7 +38,7 @@ if (quoteForm) {
       `Project Details: ${details || "Not provided"}`;
 
     window.open(
-      `https://wa.me/919135766693?text=${message}`,
+      `https://wa.me/919036341334?text=${message}`,
       "_blank"
     );
   });
