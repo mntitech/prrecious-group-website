@@ -35,7 +35,10 @@ a {
 }
 
 .brand img {
-  width: 145px;
+  width: 120px;
+  height: 70px;
+  object-fit: contain;
+  display: block;
   animation: logoPulse 4s ease-in-out infinite;
 }
 
@@ -105,9 +108,11 @@ a {
   max-width: 950px;
   padding: 70px 20px;
 }
-
 .hero-logo {
-  width: min(250px, 65vw);
+  width: min(190px, 45vw);
+  height: 190px;
+  object-fit: contain;
+  display: block;
   margin: auto auto 20px;
   animation: logoFloat 4s ease-in-out infinite;
   filter: drop-shadow(0 10px 25px #c9a44a22);
