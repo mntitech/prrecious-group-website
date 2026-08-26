@@ -844,8 +844,8 @@
     </h2>
 
     <p>
-      Send your requirement and we can discuss
-      the work, location and quotation.
+      Send your requirement, project location and service details.
+      We will discuss the work and quotation with you.
     </p>
 
   </div>
@@ -855,6 +855,7 @@
 
     <label>
       Name
+
       <input
         id="name"
         required
@@ -864,6 +865,7 @@
 
     <label>
       Phone
+
       <input
         id="phone"
         type="tel"
@@ -873,12 +875,29 @@
 
 
     <label>
-      Location
+      Site Location
+
       <input
         id="location"
         required
-        placeholder="Project location">
+        placeholder="Enter project location">
     </label>
+
+
+    <div class="location-box full">
+
+      <button
+        type="button"
+        class="location-btn"
+        id="getLocation">
+        📍 Use My Current Location
+      </button>
+
+      <p id="locationStatus">
+        Or enter the project location manually.
+      </p>
+
+    </div>
 
 
     <label>
@@ -886,37 +905,21 @@
 
       <select id="service">
 
-        <option>
-          Residential Electrical
-        </option>
+        <option>Residential Electrical</option>
 
-        <option>
-          Commercial Electrical
-        </option>
+        <option>Commercial Electrical</option>
 
-        <option>
-          Wiring / Rewiring
-        </option>
+        <option>Wiring / Rewiring</option>
 
-        <option>
-          Lighting
-        </option>
+        <option>Lighting</option>
 
-        <option>
-          DB / MCB / ELCB
-        </option>
+        <option>DB / MCB / ELCB</option>
 
-        <option>
-          Maintenance / Repair
-        </option>
+        <option>Maintenance / Repair</option>
 
-        <option>
-          Complete Electrical Work
-        </option>
+        <option>Complete Electrical Work</option>
 
-        <option>
-          Other
-        </option>
+        <option>Other</option>
 
       </select>
 
@@ -944,7 +947,6 @@
   </form>
 
 </section>
-
 
 <!-- EMPLOYEE PORTAL -->
 <section class="section" id="portal">
