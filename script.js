@@ -158,23 +158,22 @@ const attendanceList =
 const employeeLogout =
   document.getElementById("employeeLogout");
 
-
 let punchInTime = null;
 
 
-// Login
-if (login) {
+// LOGIN
+if (login && employeeDashboard) {
 
   login.addEventListener("submit", function (event) {
 
     event.preventDefault();
+    event.stopPropagation();
 
     const employeeId =
       document.getElementById("eid").value.trim();
 
     const pin =
       document.getElementById("pin").value.trim();
-
 
     if (!employeeId || !pin) {
 
@@ -184,8 +183,6 @@ if (login) {
       return;
     }
 
-
-    // Demo login only
     employeeName.textContent = "Employee";
     employeeIdDisplay.textContent = employeeId;
 
@@ -196,22 +193,25 @@ if (login) {
         year: "numeric"
       });
 
-
     employeeDashboard.hidden = false;
 
-    employeeDashboard.scrollIntoView({
-      behavior: "smooth"
-    });
-
-
     login.reset();
+
+    setTimeout(function () {
+
+      employeeDashboard.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }, 100);
 
   });
 
 }
 
 
-// Punch In
+// PUNCH IN
 if (punchIn) {
 
   punchIn.addEventListener("click", function () {
@@ -219,151 +219,147 @@ if (punchIn) {
     punchInTime = new Date();
 
     attendanceStatus.textContent =
-      `Punched in at ${punchInTime.toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      )}`;
-
+      "Punched in at " +
+      punchInTime.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
     punchIn.disabled = true;
     punchOut.disabled = false;
 
 
-    if (navigator.geolocation) {
+    if (!navigator.geolocation) {
 
       employeeLocation.textContent =
-        "📍 Getting current site location...";
+        "Location is not supported by this browser.";
 
-
-      navigator.geolocation.getCurrentPosition(
-
-        function (position) {
-
-          const latitude =
-            position.coords.latitude;
-
-          const longitude =
-            position.coords.longitude;
-
-
-          const mapUrl =
-            `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-
-          employeeLocation.innerHTML =
-            `📍 Location captured. ` +
-            `<a href="${mapUrl}" target="_blank" rel="noopener">View on Google Maps</a>`;
-
-        },
-
-        function () {
-
-          employeeLocation.textContent =
-            "Unable to get location. Please allow location access.";
-
-        },
-
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        }
-
-      );
-
+      return;
     }
+
+
+    employeeLocation.textContent =
+      "📍 Getting current site location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      function (position) {
+
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
+
+        const mapUrl =
+          `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+        employeeLocation.innerHTML =
+          `📍 Location captured. ` +
+          `<a href="${mapUrl}" target="_blank" rel="noopener">` +
+          `View on Google Maps</a>`;
+
+      },
+
+      function () {
+
+        employeeLocation.textContent =
+          "Unable to get location. Please allow location access.";
+
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+
+    );
 
   });
 
 }
 
 
-// Punch Out
+// PUNCH OUT
 if (punchOut) {
 
   punchOut.addEventListener("click", function () {
 
-    const punchOutTime =
-      new Date();
-
+    const punchOutTime = new Date();
 
     attendanceStatus.textContent =
-      `Punch out at ${punchOutTime.toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      )}`;
-
+      "Punched out at " +
+      punchOutTime.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
 
     punchOut.disabled = true;
 
 
-    if (attendanceList) {
-
-      const record =
-        document.createElement("div");
-
-      record.className =
-        "attendance-record";
-
-
-      record.innerHTML = `
-
-        <div>
-          <span>Date</span>
-          <strong>
-            ${new Date().toLocaleDateString("en-IN")}
-          </strong>
-        </div>
-
-        <div>
-          <span>Punch In</span>
-          <strong>
-            ${punchInTime
-              ? punchInTime.toLocaleTimeString("en-IN", {
-                  hour: "2-digit",
-                  minute: "2-digit"
-                })
-              : "—"}
-          </strong>
-        </div>
-
-        <div>
-          <span>Punch Out</span>
-          <strong>
-            ${punchOutTime.toLocaleTimeString("en-IN", {
-              hour: "2-digit",
-              minute: "2-digit"
-            })}
-          </strong>
-        </div>
-
-      `;
-
-
-      const empty =
-        attendanceList.querySelector(".empty-history");
-
-      if (empty) {
-        empty.remove();
-      }
-
-
-      attendanceList.prepend(record);
-
+    if (!attendanceList) {
+      return;
     }
+
+
+    const record =
+      document.createElement("div");
+
+    record.className =
+      "attendance-record";
+
+
+    record.innerHTML = `
+
+      <div>
+        <span>Date</span>
+        <strong>
+          ${new Date().toLocaleDateString("en-IN")}
+        </strong>
+      </div>
+
+      <div>
+        <span>Punch In</span>
+        <strong>
+          ${punchInTime
+            ? punchInTime.toLocaleTimeString("en-IN", {
+                hour: "2-digit",
+                minute: "2-digit"
+              })
+            : "—"}
+        </strong>
+      </div>
+
+      <div>
+        <span>Punch Out</span>
+        <strong>
+          ${punchOutTime.toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit"
+          })}
+        </strong>
+      </div>
+
+    `;
+
+
+    const empty =
+      attendanceList.querySelector(".empty-history");
+
+    if (empty) {
+      empty.remove();
+    }
+
+    attendanceList.prepend(record);
 
   });
 
 }
 
 
-// Logout
+// LOGOUT
 if (employeeLogout) {
 
   employeeLogout.addEventListener("click", function () {
