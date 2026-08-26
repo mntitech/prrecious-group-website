@@ -132,8 +132,8 @@ a {
   padding: 70px 20px;
 }
 .hero-logo {
-  width: min(190px, 45vw);
-  height: 190px;
+  width: min(160px, 38vw);
+  height: 160px;
   object-fit: contain;
   display: block;
   margin: auto auto 20px;
