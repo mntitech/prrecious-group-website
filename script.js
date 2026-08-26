@@ -251,14 +251,14 @@ if (employeeLoginBtn) {
 
         if (error) {
 
-          console.error(error);
+  console.error("SUPABASE ERROR:", error);
 
-          msg.textContent =
-            "Database error. Please try again.";
+  msg.textContent =
+    error.message || "Database error.";
 
-          return;
+  return;
         }
-
+        
         if (!data) {
 
           msg.textContent =
