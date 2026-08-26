@@ -162,12 +162,12 @@ let punchInTime = null;
 
 
 // LOGIN
-if (login && employeeDashboard) {
+const employeeLoginBtn =
+  document.getElementById("employeeLoginBtn");
 
-  login.addEventListener("submit", function (event) {
+if (employeeLoginBtn && employeeDashboard) {
 
-    event.preventDefault();
-    event.stopPropagation();
+  employeeLoginBtn.addEventListener("click", function () {
 
     const employeeId =
       document.getElementById("eid").value.trim();
@@ -183,8 +183,11 @@ if (login && employeeDashboard) {
       return;
     }
 
-    employeeName.textContent = "Employee";
-    employeeIdDisplay.textContent = employeeId;
+    employeeName.textContent =
+      "Employee";
+
+    employeeIdDisplay.textContent =
+      employeeId;
 
     todayDate.textContent =
       new Date().toLocaleDateString("en-IN", {
@@ -195,7 +198,10 @@ if (login && employeeDashboard) {
 
     employeeDashboard.hidden = false;
 
-    login.reset();
+    msg.textContent = "";
+
+    document.getElementById("eid").value = "";
+    document.getElementById("pin").value = "";
 
     setTimeout(function () {
 
