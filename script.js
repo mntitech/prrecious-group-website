@@ -122,30 +122,274 @@ if (quoteForm) {
 
 }
 
-// Employee / Founder portal demo
-// IMPORTANT: This is only a front-end demo.
-// Real authentication must be connected to a secure backend.
+// Employee Dashboard demo
+// Real authentication and attendance storage will be connected to a secure backend.
 
 const login = document.getElementById("login");
 const msg = document.getElementById("msg");
 
+const employeeDashboard =
+  document.getElementById("employeeDashboard");
+
+const employeeName =
+  document.getElementById("employeeName");
+
+const employeeIdDisplay =
+  document.getElementById("employeeId");
+
+const todayDate =
+  document.getElementById("todayDate");
+
+const attendanceStatus =
+  document.getElementById("attendanceStatus");
+
+const punchIn =
+  document.getElementById("punchIn");
+
+const punchOut =
+  document.getElementById("punchOut");
+
+const employeeLocation =
+  document.getElementById("employeeLocation");
+
+const attendanceList =
+  document.getElementById("attendanceList");
+
+const employeeLogout =
+  document.getElementById("employeeLogout");
+
+
+let punchInTime = null;
+
+
+// Login
 if (login) {
+
   login.addEventListener("submit", function (event) {
+
     event.preventDefault();
 
-    const employeeId = document.getElementById("eid").value.trim();
-    const pin = document.getElementById("pin").value.trim();
+    const employeeId =
+      document.getElementById("eid").value.trim();
+
+    const pin =
+      document.getElementById("pin").value.trim();
+
 
     if (!employeeId || !pin) {
-      msg.textContent = "Please enter your Employee ID and PIN.";
+
+      msg.textContent =
+        "Please enter your Employee ID and PIN.";
+
       return;
     }
 
-    msg.textContent =
-      "Portal demo only. Secure employee authentication will be connected in the production version.";
+
+    // Demo login only
+    employeeName.textContent = "Employee";
+    employeeIdDisplay.textContent = employeeId;
+
+    todayDate.textContent =
+      new Date().toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+
+
+    employeeDashboard.hidden = false;
+
+    employeeDashboard.scrollIntoView({
+      behavior: "smooth"
+    });
+
+
+    login.reset();
+
   });
+
 }
 
+
+// Punch In
+if (punchIn) {
+
+  punchIn.addEventListener("click", function () {
+
+    punchInTime = new Date();
+
+    attendanceStatus.textContent =
+      `Punched in at ${punchInTime.toLocaleTimeString(
+        "en-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )}`;
+
+
+    punchIn.disabled = true;
+    punchOut.disabled = false;
+
+
+    if (navigator.geolocation) {
+
+      employeeLocation.textContent =
+        "📍 Getting current site location...";
+
+
+      navigator.geolocation.getCurrentPosition(
+
+        function (position) {
+
+          const latitude =
+            position.coords.latitude;
+
+          const longitude =
+            position.coords.longitude;
+
+
+          const mapUrl =
+            `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+
+          employeeLocation.innerHTML =
+            `📍 Location captured. ` +
+            `<a href="${mapUrl}" target="_blank" rel="noopener">View on Google Maps</a>`;
+
+        },
+
+        function () {
+
+          employeeLocation.textContent =
+            "Unable to get location. Please allow location access.";
+
+        },
+
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+
+      );
+
+    }
+
+  });
+
+}
+
+
+// Punch Out
+if (punchOut) {
+
+  punchOut.addEventListener("click", function () {
+
+    const punchOutTime =
+      new Date();
+
+
+    attendanceStatus.textContent =
+      `Punch out at ${punchOutTime.toLocaleTimeString(
+        "en-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )}`;
+
+
+    punchOut.disabled = true;
+
+
+    if (attendanceList) {
+
+      const record =
+        document.createElement("div");
+
+      record.className =
+        "attendance-record";
+
+
+      record.innerHTML = `
+
+        <div>
+          <span>Date</span>
+          <strong>
+            ${new Date().toLocaleDateString("en-IN")}
+          </strong>
+        </div>
+
+        <div>
+          <span>Punch In</span>
+          <strong>
+            ${punchInTime
+              ? punchInTime.toLocaleTimeString("en-IN", {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                })
+              : "—"}
+          </strong>
+        </div>
+
+        <div>
+          <span>Punch Out</span>
+          <strong>
+            ${punchOutTime.toLocaleTimeString("en-IN", {
+              hour: "2-digit",
+              minute: "2-digit"
+            })}
+          </strong>
+        </div>
+
+      `;
+
+
+      const empty =
+        attendanceList.querySelector(".empty-history");
+
+      if (empty) {
+        empty.remove();
+      }
+
+
+      attendanceList.prepend(record);
+
+    }
+
+  });
+
+}
+
+
+// Logout
+if (employeeLogout) {
+
+  employeeLogout.addEventListener("click", function () {
+
+    employeeDashboard.hidden = true;
+
+    punchIn.disabled = false;
+    punchOut.disabled = true;
+
+    punchInTime = null;
+
+    attendanceStatus.textContent =
+      "Not punched in";
+
+    employeeLocation.textContent =
+      "📍 Site location will appear here.";
+
+    document
+      .getElementById("portal")
+      .scrollIntoView({
+        behavior: "smooth"
+      });
+
+  });
+
+}
 
 // Update footer year automatically
 const year = document.querySelector("footer small");
