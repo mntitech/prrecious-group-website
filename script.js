@@ -13,28 +13,37 @@ const supabaseClient =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
+
 // ================================
 // MOBILE NAVIGATION
 // ================================
 
-const menu = document.querySelector(".menu");
-const nav = document.querySelector(".header nav");
+const menu =
+  document.querySelector(".menu");
+
+const nav =
+  document.querySelector(".header nav");
 
 if (menu && nav) {
+
   menu.addEventListener("click", function () {
     nav.classList.toggle("open");
   });
 
   nav.querySelectorAll("a").forEach(function (link) {
+
     link.addEventListener("click", function () {
       nav.classList.remove("open");
     });
+
   });
+
 }
 
 
 // ================================
-// WHATSAPP QUOTE FORM + LOCATION
+// WHATSAPP QUOTE FORM
 // ================================
 
 const quoteForm =
@@ -52,11 +61,14 @@ const locationStatus =
 let mapLocation = "";
 
 if (getLocationBtn) {
+
   getLocationBtn.addEventListener("click", function () {
 
     if (!navigator.geolocation) {
+
       locationStatus.textContent =
         "Location is not supported by this browser.";
+
       return;
     }
 
@@ -83,6 +95,7 @@ if (getLocationBtn) {
           `📍 Location captured successfully. ` +
           `<a href="${mapLocation}" target="_blank" rel="noopener">` +
           `View on Google Maps</a>`;
+
       },
 
       function () {
@@ -97,9 +110,11 @@ if (getLocationBtn) {
         timeout: 10000,
         maximumAge: 0
       }
+
     );
 
   });
+
 }
 
 
@@ -190,64 +205,125 @@ const employeeLogout =
 
 let punchInTime = null;
 
+let currentEmployee = null;
+
 
 // ================================
 // EMPLOYEE LOGIN
 // ================================
 
-if (employeeLoginBtn && employeeDashboard) {
+if (employeeLoginBtn) {
 
-  employeeLoginBtn.addEventListener("click", function () {
+  employeeLoginBtn.addEventListener(
+    "click",
+    async function () {
 
-    const employeeId =
-      document.getElementById("eid").value.trim();
+      const employeeId =
+        document.getElementById("eid").value.trim();
 
-    const pin =
-      document.getElementById("pin").value.trim();
+      const pin =
+        document.getElementById("pin").value.trim();
 
-    if (!employeeId || !pin) {
+      if (!employeeId || !pin) {
+
+        msg.textContent =
+          "Please enter your Employee ID and PIN.";
+
+        return;
+      }
 
       msg.textContent =
-        "Please enter your Employee ID and PIN.";
+        "Checking login...";
 
-      return;
+      employeeLoginBtn.disabled =
+        true;
+
+      try {
+
+        const { data, error } =
+          await supabaseClient
+            .from("Employee")
+            .select("*")
+            .eq("Employee id", employeeId)
+            .eq("Pin", pin)
+            .eq("Active", true)
+            .maybeSingle();
+
+        if (error) {
+
+          console.error(error);
+
+          msg.textContent =
+            "Database error. Please try again.";
+
+          return;
+        }
+
+        if (!data) {
+
+          msg.textContent =
+            "Invalid Employee ID or PIN.";
+
+          return;
+        }
+
+        // SAVE LOGGED-IN EMPLOYEE
+        currentEmployee =
+          data;
+
+        employeeName.textContent =
+          data.Name || "Employee";
+
+        employeeIdDisplay.textContent =
+          data["Employee id"];
+
+        todayDate.textContent =
+          new Date().toLocaleDateString(
+            "en-IN",
+            {
+              day: "2-digit",
+              month: "long",
+              year: "numeric"
+            }
+          );
+
+        employeeDashboard.hidden =
+          false;
+
+        msg.textContent =
+          "";
+
+        document.getElementById("eid").value =
+          "";
+
+        document.getElementById("pin").value =
+          "";
+
+        setTimeout(function () {
+
+          employeeDashboard.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+        }, 100);
+
+      } catch (error) {
+
+        console.error(error);
+
+        msg.textContent =
+          "Something went wrong.";
+
+      } finally {
+
+        employeeLoginBtn.disabled =
+          false;
+
+      }
+
     }
-
-    employeeName.textContent =
-      "Employee";
-
-    employeeIdDisplay.textContent =
-      employeeId;
-
-    todayDate.textContent =
-      new Date().toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric"
-      });
-
-    employeeDashboard.hidden =
-      false;
-
-    msg.textContent =
-      "";
-
-    document.getElementById("eid").value =
-      "";
-
-    document.getElementById("pin").value =
-      "";
-
-    setTimeout(function () {
-
-      employeeDashboard.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-    }, 100);
-
-  });
+  );
 
 }
 
@@ -258,71 +334,84 @@ if (employeeLoginBtn && employeeDashboard) {
 
 if (punchIn) {
 
-  punchIn.addEventListener("click", function () {
+  punchIn.addEventListener(
+    "click",
+    function () {
 
-    punchInTime =
-      new Date();
+      if (!currentEmployee) {
 
-    attendanceStatus.textContent =
-      `Punched in at ${punchInTime.toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      )}`;
+        attendanceStatus.textContent =
+          "Please login first.";
 
-    punchIn.disabled =
-      true;
+        return;
+      }
 
-    punchOut.disabled =
-      false;
+      punchInTime =
+        new Date();
 
-    if (!navigator.geolocation) {
+      attendanceStatus.textContent =
+        `Punched in at ${punchInTime.toLocaleTimeString(
+          "en-IN",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        )}`;
 
-      employeeLocation.textContent =
-        "Location is not supported by this browser.";
+      punchIn.disabled =
+        true;
 
-      return;
-    }
+      punchOut.disabled =
+        false;
 
-    employeeLocation.textContent =
-      "📍 Getting current site location...";
-
-    navigator.geolocation.getCurrentPosition(
-
-      function (position) {
-
-        const latitude =
-          position.coords.latitude;
-
-        const longitude =
-          position.coords.longitude;
-
-        const mapUrl =
-          `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-        employeeLocation.innerHTML =
-          `📍 Location captured. ` +
-          `<a href="${mapUrl}" target="_blank" rel="noopener">` +
-          `View on Google Maps</a>`;
-      },
-
-      function () {
+      if (!navigator.geolocation) {
 
         employeeLocation.textContent =
-          "Unable to get location. Please allow location access.";
+          "Location is not supported by this browser.";
 
-      },
-
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
+        return;
       }
-    );
 
-  });
+      employeeLocation.textContent =
+        "📍 Getting current site location...";
+
+      navigator.geolocation.getCurrentPosition(
+
+        function (position) {
+
+          const latitude =
+            position.coords.latitude;
+
+          const longitude =
+            position.coords.longitude;
+
+          const mapUrl =
+            `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+          employeeLocation.innerHTML =
+            `📍 Location captured. ` +
+            `<a href="${mapUrl}" target="_blank" rel="noopener">` +
+            `View on Google Maps</a>`;
+
+        },
+
+        function () {
+
+          employeeLocation.textContent =
+            "Unable to get location. Please allow location access.";
+
+        },
+
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+
+      );
+
+    }
+  );
 
 }
 
@@ -333,86 +422,89 @@ if (punchIn) {
 
 if (punchOut) {
 
-  punchOut.addEventListener("click", function () {
+  punchOut.addEventListener(
+    "click",
+    function () {
 
-    const punchOutTime =
-      new Date();
+      const punchOutTime =
+        new Date();
 
-    attendanceStatus.textContent =
-      `Punched out at ${punchOutTime.toLocaleTimeString(
-        "en-IN",
-        {
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      )}`;
-
-    punchOut.disabled =
-      true;
-
-    if (!attendanceList) {
-      return;
-    }
-
-    const record =
-      document.createElement("div");
-
-    record.className =
-      "attendance-record";
-
-    record.innerHTML = `
-
-      <div>
-        <span>Date</span>
-        <strong>
-          ${new Date().toLocaleDateString("en-IN")}
-        </strong>
-      </div>
-
-      <div>
-        <span>Punch In</span>
-        <strong>
-          ${
-            punchInTime
-              ? punchInTime.toLocaleTimeString(
-                  "en-IN",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                  }
-                )
-              : "—"
+      attendanceStatus.textContent =
+        `Punched out at ${punchOutTime.toLocaleTimeString(
+          "en-IN",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
           }
-        </strong>
-      </div>
+        )}`;
 
-      <div>
-        <span>Punch Out</span>
-        <strong>
-          ${punchOutTime.toLocaleTimeString(
-            "en-IN",
-            {
-              hour: "2-digit",
-              minute: "2-digit"
-            }
-          )}
-        </strong>
-      </div>
+      punchOut.disabled =
+        true;
 
-    `;
+      if (attendanceList) {
 
-    const empty =
-      attendanceList.querySelector(
-        ".empty-history"
-      );
+        const record =
+          document.createElement("div");
 
-    if (empty) {
-      empty.remove();
+        record.className =
+          "attendance-record";
+
+        record.innerHTML = `
+
+          <div>
+            <span>Date</span>
+            <strong>
+              ${new Date().toLocaleDateString("en-IN")}
+            </strong>
+          </div>
+
+          <div>
+            <span>Punch In</span>
+            <strong>
+              ${
+                punchInTime
+                  ? punchInTime.toLocaleTimeString(
+                      "en-IN",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                      }
+                    )
+                  : "—"
+              }
+            </strong>
+          </div>
+
+          <div>
+            <span>Punch Out</span>
+            <strong>
+              ${punchOutTime.toLocaleTimeString(
+                "en-IN",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit"
+                }
+              )}
+            </strong>
+          </div>
+
+        `;
+
+        const empty =
+          attendanceList.querySelector(
+            ".empty-history"
+          );
+
+        if (empty) {
+          empty.remove();
+        }
+
+        attendanceList.prepend(record);
+
+      }
+
     }
-
-    attendanceList.prepend(record);
-
-  });
+  );
 
 }
 
@@ -423,33 +515,39 @@ if (punchOut) {
 
 if (employeeLogout) {
 
-  employeeLogout.addEventListener("click", function () {
+  employeeLogout.addEventListener(
+    "click",
+    function () {
 
-    employeeDashboard.hidden =
-      true;
+      employeeDashboard.hidden =
+        true;
 
-    punchIn.disabled =
-      false;
+      punchIn.disabled =
+        false;
 
-    punchOut.disabled =
-      true;
+      punchOut.disabled =
+        true;
 
-    punchInTime =
-      null;
+      punchInTime =
+        null;
 
-    attendanceStatus.textContent =
-      "Not punched in";
+      currentEmployee =
+        null;
 
-    employeeLocation.textContent =
-      "📍 Site location will appear here.";
+      attendanceStatus.textContent =
+        "Not punched in";
 
-    document
-      .getElementById("portal")
-      .scrollIntoView({
-        behavior: "smooth"
-      });
+      employeeLocation.textContent =
+        "📍 Site location will appear here.";
 
-  });
+      document
+        .getElementById("portal")
+        .scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }
+  );
 
 }
 
