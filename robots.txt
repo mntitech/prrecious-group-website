@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mntitech.github.io/prrecious-group-website/sitemap.xml
