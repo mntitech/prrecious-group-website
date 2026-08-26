@@ -298,7 +298,20 @@ a {
   color: #999;
   font-size: 0.88rem;
 }
+.services-cta {
+  margin-top: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
 
+.services-cta p {
+  margin: 0;
+  color: #999;
+  font-size: 0.86rem;
+}
 /* WHY US / ABOUT */
 
 .split {
