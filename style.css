@@ -104,7 +104,7 @@ a {
 /* HERO */
 
 .hero {
-  min-height: 78vh;
+  min-height: 68vh;
   display: grid;
   place-items: center;
   text-align: center;
