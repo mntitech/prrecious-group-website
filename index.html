@@ -1081,7 +1081,131 @@
   </div>
 
 </section>
+<!-- EMPLOYEE DASHBOARD -->
+<section class="section" id="employeeDashboard" hidden>
 
+  <div class="heading">
+
+    <p class="eyebrow">
+      EMPLOYEE AREA
+    </p>
+
+    <h2>
+      Employee Dashboard
+    </h2>
+
+    <p>
+      Manage your daily attendance and site activity.
+    </p>
+
+  </div>
+
+
+  <div class="employee-dashboard">
+
+    <div class="employee-profile">
+
+      <div>
+        <span>EMPLOYEE</span>
+        <h3 id="employeeName">
+          Employee
+        </h3>
+      </div>
+
+      <div>
+        <span>EMPLOYEE ID</span>
+        <strong id="employeeId">
+          —
+        </strong>
+      </div>
+
+    </div>
+
+
+    <div class="attendance-card">
+
+      <p class="eyebrow">
+        TODAY
+      </p>
+
+      <h3 id="todayDate">
+        —
+      </h3>
+
+      <p id="attendanceStatus">
+        Not punched in
+      </p>
+
+
+      <div class="attendance-actions">
+
+        <button
+          class="btn gold"
+          id="punchIn"
+          type="button">
+          Punch In
+        </button>
+
+        <button
+          class="btn"
+          id="punchOut"
+          type="button"
+          disabled>
+          Punch Out
+        </button>
+
+      </div>
+
+
+      <div
+        class="employee-location"
+        id="employeeLocation">
+
+        📍 Site location will appear here.
+
+      </div>
+
+    </div>
+
+
+    <div class="attendance-history">
+
+      <div class="history-header">
+
+        <div>
+          <p class="eyebrow">
+            ATTENDANCE
+          </p>
+
+          <h3>
+            Recent Activity
+          </h3>
+        </div>
+
+      </div>
+
+
+      <div id="attendanceList">
+
+        <p class="empty-history">
+          No attendance records yet.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="btn logout-btn"
+      id="employeeLogout"
+      type="button">
+      Logout
+    </button>
+
+  </div>
+
+</section>
 <!-- CONTACT -->
 <section class="contact" id="contact">
 
