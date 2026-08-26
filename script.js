@@ -1,30 +1,41 @@
-// Mobile navigation
+// ================================
+// MOBILE NAVIGATION
+// ================================
+
 const menu = document.querySelector(".menu");
 const nav = document.querySelector(".header nav");
 
 if (menu && nav) {
-  menu.addEventListener("click", () => {
+  menu.addEventListener("click", function () {
     nav.classList.toggle("open");
   });
 
-  nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
+  nav.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
       nav.classList.remove("open");
     });
   });
 }
 
 
-// WhatsApp quote form + location
-const quoteForm = document.getElementById("quoteForm");
-const getLocationBtn = document.getElementById("getLocation");
-const locationInput = document.getElementById("location");
-const locationStatus = document.getElementById("locationStatus");
+// ================================
+// WHATSAPP QUOTE FORM + LOCATION
+// ================================
+
+const quoteForm =
+  document.getElementById("quoteForm");
+
+const getLocationBtn =
+  document.getElementById("getLocation");
+
+const locationInput =
+  document.getElementById("location");
+
+const locationStatus =
+  document.getElementById("locationStatus");
 
 let mapLocation = "";
 
-
-// Get customer's current GPS location
 if (getLocationBtn) {
   getLocationBtn.addEventListener("click", function () {
 
@@ -41,19 +52,22 @@ if (getLocationBtn) {
 
       function (position) {
 
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
 
         mapLocation =
           `https://www.google.com/maps?q=${latitude},${longitude}`;
 
         locationInput.value =
-          `Google Maps Location`;
+          "Google Maps Location";
 
         locationStatus.innerHTML =
           `📍 Location captured successfully. ` +
-          `<a href="${mapLocation}" target="_blank" rel="noopener">View on Google Maps</a>`;
-
+          `<a href="${mapLocation}" target="_blank" rel="noopener">` +
+          `View on Google Maps</a>`;
       },
 
       function () {
@@ -68,13 +82,12 @@ if (getLocationBtn) {
         timeout: 10000,
         maximumAge: 0
       }
-
     );
+
   });
 }
 
 
-// Send quote to PRRECIOUS GROUP WhatsApp
 if (quoteForm) {
 
   quoteForm.addEventListener("submit", function (event) {
@@ -96,12 +109,10 @@ if (quoteForm) {
     const details =
       document.getElementById("details").value.trim();
 
-
     const finalLocation =
       mapLocation ||
       location ||
       "Not provided";
-
 
     const message =
       `Hello PRRECIOUS GROUP,%0A%0A` +
@@ -112,7 +123,6 @@ if (quoteForm) {
       `Service: ${encodeURIComponent(service)}%0A` +
       `Project Details: ${encodeURIComponent(details || "Not provided")}`;
 
-
     window.open(
       `https://wa.me/919036341334?text=${message}`,
       "_blank"
@@ -122,11 +132,16 @@ if (quoteForm) {
 
 }
 
-// Employee Dashboard demo
-// Real authentication and attendance storage will be connected to a secure backend.
 
-const login = document.getElementById("login");
-const msg = document.getElementById("msg");
+// ================================
+// EMPLOYEE DASHBOARD
+// ================================
+
+const msg =
+  document.getElementById("msg");
+
+const employeeLoginBtn =
+  document.getElementById("employeeLoginBtn");
 
 const employeeDashboard =
   document.getElementById("employeeDashboard");
@@ -161,9 +176,9 @@ const employeeLogout =
 let punchInTime = null;
 
 
-// LOGIN
-const employeeLoginBtn =
-  document.getElementById("employeeLoginBtn");
+// ================================
+// EMPLOYEE LOGIN
+// ================================
 
 if (employeeLoginBtn && employeeDashboard) {
 
@@ -196,12 +211,17 @@ if (employeeLoginBtn && employeeDashboard) {
         year: "numeric"
       });
 
-    employeeDashboard.hidden = false;
+    employeeDashboard.hidden =
+      false;
 
-    msg.textContent = "";
+    msg.textContent =
+      "";
 
-    document.getElementById("eid").value = "";
-    document.getElementById("pin").value = "";
+    document.getElementById("eid").value =
+      "";
+
+    document.getElementById("pin").value =
+      "";
 
     setTimeout(function () {
 
@@ -217,23 +237,31 @@ if (employeeLoginBtn && employeeDashboard) {
 }
 
 
+// ================================
 // PUNCH IN
+// ================================
+
 if (punchIn) {
 
   punchIn.addEventListener("click", function () {
 
-    punchInTime = new Date();
+    punchInTime =
+      new Date();
 
     attendanceStatus.textContent =
-      "Punched in at " +
-      punchInTime.toLocaleTimeString("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      `Punched in at ${punchInTime.toLocaleTimeString(
+        "en-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )}`;
 
-    punchIn.disabled = true;
-    punchOut.disabled = false;
+    punchIn.disabled =
+      true;
 
+    punchOut.disabled =
+      false;
 
     if (!navigator.geolocation) {
 
@@ -243,10 +271,8 @@ if (punchIn) {
       return;
     }
 
-
     employeeLocation.textContent =
       "📍 Getting current site location...";
-
 
     navigator.geolocation.getCurrentPosition(
 
@@ -265,7 +291,6 @@ if (punchIn) {
           `📍 Location captured. ` +
           `<a href="${mapUrl}" target="_blank" rel="noopener">` +
           `View on Google Maps</a>`;
-
       },
 
       function () {
@@ -280,7 +305,6 @@ if (punchIn) {
         timeout: 10000,
         maximumAge: 0
       }
-
     );
 
   });
@@ -288,34 +312,38 @@ if (punchIn) {
 }
 
 
+// ================================
 // PUNCH OUT
+// ================================
+
 if (punchOut) {
 
   punchOut.addEventListener("click", function () {
 
-    const punchOutTime = new Date();
+    const punchOutTime =
+      new Date();
 
     attendanceStatus.textContent =
-      "Punched out at " +
-      punchOutTime.toLocaleTimeString("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      `Punched out at ${punchOutTime.toLocaleTimeString(
+        "en-IN",
+        {
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      )}`;
 
-    punchOut.disabled = true;
-
+    punchOut.disabled =
+      true;
 
     if (!attendanceList) {
       return;
     }
-
 
     const record =
       document.createElement("div");
 
     record.className =
       "attendance-record";
-
 
     record.innerHTML = `
 
@@ -329,30 +357,39 @@ if (punchOut) {
       <div>
         <span>Punch In</span>
         <strong>
-          ${punchInTime
-            ? punchInTime.toLocaleTimeString("en-IN", {
-                hour: "2-digit",
-                minute: "2-digit"
-              })
-            : "—"}
+          ${
+            punchInTime
+              ? punchInTime.toLocaleTimeString(
+                  "en-IN",
+                  {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  }
+                )
+              : "—"
+          }
         </strong>
       </div>
 
       <div>
         <span>Punch Out</span>
         <strong>
-          ${punchOutTime.toLocaleTimeString("en-IN", {
-            hour: "2-digit",
-            minute: "2-digit"
-          })}
+          ${punchOutTime.toLocaleTimeString(
+            "en-IN",
+            {
+              hour: "2-digit",
+              minute: "2-digit"
+            }
+          )}
         </strong>
       </div>
 
     `;
 
-
     const empty =
-      attendanceList.querySelector(".empty-history");
+      attendanceList.querySelector(
+        ".empty-history"
+      );
 
     if (empty) {
       empty.remove();
@@ -365,17 +402,25 @@ if (punchOut) {
 }
 
 
+// ================================
 // LOGOUT
+// ================================
+
 if (employeeLogout) {
 
   employeeLogout.addEventListener("click", function () {
 
-    employeeDashboard.hidden = true;
+    employeeDashboard.hidden =
+      true;
 
-    punchIn.disabled = false;
-    punchOut.disabled = true;
+    punchIn.disabled =
+      false;
 
-    punchInTime = null;
+    punchOut.disabled =
+      true;
+
+    punchInTime =
+      null;
 
     attendanceStatus.textContent =
       "Not punched in";
@@ -393,10 +438,17 @@ if (employeeLogout) {
 
 }
 
-// Update footer year automatically
-const year = document.querySelector("footer small");
+
+// ================================
+// FOOTER YEAR
+// ================================
+
+const year =
+  document.querySelector("footer small");
 
 if (year) {
+
   year.textContent =
     `© ${new Date().getFullYear()} PRRECIOUS GROUP. All rights reserved.`;
+
 }
