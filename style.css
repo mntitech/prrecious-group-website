@@ -666,16 +666,33 @@ a {
 
 .contact-links {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   min-width: 300px;
 }
 
 .contact-links a:not(.btn) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #101010;
+  border: 1px solid #30281a;
+  border-radius: 7px;
   color: #d1cec7;
+  text-decoration: none;
+  transition: 0.25s ease;
 }
 
 .contact-links a:not(.btn):hover {
   color: #d5b15b;
+  border-color: #8f6d2e;
+  transform: translateY(-2px);
+}
+
+.contact-links .btn {
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 /* FOOTER */
