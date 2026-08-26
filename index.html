@@ -1046,9 +1046,8 @@
       </h2>
 
       <p>
-        Private access for authorised team members.
-        Secure authentication and attendance tracking
-        will be connected in the production backend.
+        Login to access your employee dashboard,
+        attendance and site punch records.
       </p>
 
     </div>
@@ -1058,14 +1057,20 @@
 
       <input
         id="eid"
-        placeholder="Employee ID">
+        placeholder="Employee ID"
+        autocomplete="username"
+        required>
 
       <input
         id="pin"
         type="password"
-        placeholder="PIN">
+        placeholder="PIN"
+        autocomplete="current-password"
+        required>
 
-      <button class="btn gold">
+      <button
+        class="btn gold"
+        type="submit">
         Login
       </button>
 
@@ -1076,7 +1081,6 @@
   </div>
 
 </section>
-
 
 <!-- CONTACT -->
 <section class="contact" id="contact">
