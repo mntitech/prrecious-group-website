@@ -1,4 +1,19 @@
 // ================================
+// SUPABASE CONNECTION
+// ================================
+
+const SUPABASE_URL =
+  "https://fponejmrqynnmxtflfru.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+  "sb_publishable_5KN1sfgO2X7QxIds6l-_qA_bK3NojJZ";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+// ================================
 // MOBILE NAVIGATION
 // ================================
 
