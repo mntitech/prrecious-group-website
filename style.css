@@ -41,7 +41,30 @@ a {
   display: block;
   animation: logoPulse 4s ease-in-out infinite;
 }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.95;
+}
+
+.brand-text strong {
+  color: #e0bd68;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.brand-text small {
+  color: #aaa;
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  margin-top: 4px;
+}
 .header nav {
   display: flex;
   align-items: center;
