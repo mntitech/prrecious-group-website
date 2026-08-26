@@ -589,7 +589,41 @@ a {
 .full {
   grid-column: 1 / -1;
 }
+.location-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
 
+.location-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background: #111;
+  color: #d7b35c;
+  border: 1px solid #8f6d2e;
+  border-radius: 7px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.location-btn:hover {
+  background: #1a160d;
+  border-color: #d7b35c;
+  transform: translateY(-2px);
+}
+
+.location-box p {
+  margin: 0;
+  color: #777;
+  font-size: 0.72rem;
+}
+
+.location-box a {
+  color: #d7b35c;
+}
 /* EMPLOYEE PORTAL */
 
 .portal-box {
