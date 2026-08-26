@@ -265,7 +265,9 @@ a {
 .services {
   grid-template-columns: repeat(4, 1fr);
 }
-
+.works {
+  grid-template-columns: repeat(3, 1fr);
+}
 .services article {
   min-height: 205px;
   padding: 26px 22px;
