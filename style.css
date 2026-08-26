@@ -861,7 +861,21 @@ footer small {
   footer small {
     grid-column: auto;
   }
+  .employee-profile {
+    grid-template-columns: 1fr;
+  }
 
+  .attendance-actions {
+    flex-direction: column;
+  }
+
+  .attendance-actions .btn {
+    width: 100%;
+  }
+
+  .attendance-record {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* SMALL MOBILE */
