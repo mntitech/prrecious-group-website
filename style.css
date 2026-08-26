@@ -474,44 +474,78 @@ a {
 
 .founders {
   display: grid;
-  grid-template-columns: repeat(2, 250px);
+  grid-template-columns: repeat(2, minmax(280px, 360px));
   justify-content: center;
-  gap: 22px;
+  gap: 24px;
+  margin-top: 10px;
 }
 
 .founders article {
+  position: relative;
   text-align: center;
-  padding: 28px;
+  padding: 34px 28px;
   border: 1px solid #29251e;
-  background: #101010;
+  background:
+    linear-gradient(145deg, #151515, #0c0c0c);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.founders article:hover {
+  transform: translateY(-5px);
+  border-color: #8f6d2e;
 }
 
 .avatar {
-  width: 108px;
-  height: 108px;
+  width: 112px;
+  height: 112px;
   border-radius: 50%;
-  margin: auto auto 17px;
+  margin: 0 auto 20px;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle, #3b301c, #111);
-  border: 1px solid #a37c30;
+
+  background:
+    radial-gradient(circle at 35% 30%, #514321, #17130c 65%, #0b0b0b);
+
+  border: 1px solid #b08a3c;
+  box-shadow: 0 0 30px rgba(181, 140, 59, 0.12);
+
   color: #dfbd69;
-  font-size: 1.8rem;
+  font-size: 1.75rem;
   font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.founder-content {
+  max-width: 280px;
+  margin: auto;
+}
+
+.founder-role {
+  margin: 0 0 7px !important;
+  color: #c19a4c !important;
+  font-size: 0.68rem !important;
+  font-weight: 800;
+  letter-spacing: 0.18em;
 }
 
 .founders h3 {
-  margin: 0;
+  margin: 0 0 10px;
+  font-size: 1.25rem;
 }
 
-.founders p {
-  margin: 4px;
-  color: #b99040;
+.founder-content > p:last-child {
+  margin: 0;
+  color: #888 !important;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .note {
+  max-width: 700px;
+  margin: 30px auto 0;
   text-align: center;
   color: #777;
+  font-size: 0.78rem;
 }
 
 /* FORM */
